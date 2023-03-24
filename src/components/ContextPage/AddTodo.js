@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import CssBaseline from '@mui/material/CssBaseline'
 import Container from '@mui/material/Container'
 import TextField from '@mui/material/TextField'
@@ -11,40 +11,33 @@ import Grid from '@mui/material/Unstable_Grid2'
 import CardItem from './CardItem'
 
 const AddTodo = () => {
-  const data = useContext(TodoContext)
-  const [collection, setCollections] = useState([])
+  const { todoList, setTodoList } = useContext(TodoContext)
+
   const [states, setStates] = useState({
     inputValue: '',
     discription: '',
   })
+
   const [errors, setErrors] = useState({
     inputValue: '',
     discription: '',
   })
 
   const handleChange = (e) => {
-    debouncedfunc(e, 1)
+    const { value, name } = e.target
+    setStates({
+      ...states,
+      [name]: value,
+    })
   }
-
-  const debouncedfunc = debounce((e, val) => {
-    if (val === 1) {
-      const { value, name } = e.target
-      setStates({
-        ...states,
-        [name]: value,
-      })
-    }
-
-    handleVlidation()
-  }, 1000)
 
   const handleSubmit = (e) => {
     if (handleVlidation()) {
       let data = {
         title: states['inputValue'],
-        discriptions: states['discription'],
+        discription: states['discription'],
       }
-      setCollections([data, ...collection])
+      setTodoList([data, ...todoList])
       setStates({
         inputValue: '',
         discription: '',
@@ -56,6 +49,8 @@ const AddTodo = () => {
     let isvalid = true
     let err = { ...errors }
     let state = { ...states }
+
+    console.log(state)
 
     if (state.inputValue === '') {
       err['inputValue'] = 'Please Enter Title'
@@ -76,6 +71,7 @@ const AddTodo = () => {
     return isvalid
   }
 
+  useEffect(() => {}, [states, todoList])
   return (
     <React.Fragment>
       <CssBaseline />
@@ -88,7 +84,7 @@ const AddTodo = () => {
             id='outlined-multiline-static'
             label='Todo title'
             placeholder='Item...'
-            value={setStates.inputValue}
+            value={states.inputValue}
             name='inputValue'
             onChange={(e) => handleChange(e)}
           />
@@ -101,7 +97,7 @@ const AddTodo = () => {
             placeholder='Todo Discription'
             minRows={4}
             style={{ width: '100%', padding: '0.5em' }}
-            value={setStates.textValue}
+            value={states.discription}
             name='discription'
             onChange={(e) => handleChange(e)}
           />
@@ -116,7 +112,7 @@ const AddTodo = () => {
 
         <Box sx={{ flexGrow: 2 }}>
           <Grid container spacing={3}>
-            {collection.map((item, index) => {
+            {todoList.map((item, index) => {
               return (
                 <>
                   <Grid xs={4} key={index}>

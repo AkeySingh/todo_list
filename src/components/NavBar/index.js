@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useContext } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -6,8 +6,15 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
+import { TodoContext } from '../Context/TodoContext'
 
 const NavBar = () => {
+  const { saveTodoLsit } = useContext(TodoContext)
+
+  const handleSaveAllChanges = () => {
+    saveTodoLsit()
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='static'>
@@ -16,10 +23,11 @@ const NavBar = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-            <div className='nav-item'>Home</div>
-            <div className='nav-item'>About</div>
+            <div className='nav-item'>Todo Lsit</div>
           </Typography>
-          <Button color='inherit'>Login</Button>
+          <Button variant='outlined' color='inherit' onClick={() => handleSaveAllChanges()}>
+            Save
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>
