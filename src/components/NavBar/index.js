@@ -19,7 +19,6 @@ const NavBar = () => {
             <div className='nav-item'>Home</div>
             <div className='nav-item'>About</div>
           </Typography>
-
           <Button color='inherit'>Login</Button>
         </Toolbar>
       </AppBar>
